@@ -5,12 +5,19 @@ export const createUser = async ({ email, password }) => {
     throw new Error("Email and password are required");
   }
 
-  const hashPassword = await userModel.hashPassword(password);
+  const hashedPassword = await userModel.hashPassword(password);
 
   const user = await userModel.create({
     email,
-    password: hashPassword,
+    password: hashedPassword,
   });
 
   return user;
+};
+
+export const getAllUsers = async ({ userId }) => {
+  const users = await userModel.find({
+    _id: { $ne: userId },
+  });
+  return users;
 };
